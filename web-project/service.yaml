@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  type: ClusterIP
+  selector:
+    app: web
+  ports:
+  - name: web
+    port: 80
+    targetPort: 80
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-db
+  labels:
+    app: postgres
+spec:
+  ports:
+  - name: postgres
+    port: 5432    
+ # clusterIP: None
+  selector:
+    app: postgres
+  

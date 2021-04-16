@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: database
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      serviceAccountName: secret-access-sa
+      containers:
+      - name: postgres
+        image: nick1846/my-postgres:12.0
+        envFrom:
+        - secretRef:
+            name: postgres-secrets
+        - configMapRef:
+            name: postgres-configmap  
+        ports:
+        - name: postgredb
+          containerPort: 5432         
+        volumeMounts:
+        - name: data
+          mountPath: /data
+          #subPath: data 
+      volumes:
+        - name: data
+          emptyDir: {}
