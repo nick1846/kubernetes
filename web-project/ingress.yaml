@@ -1,15 +1,28 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: jenkins-ingress
+  name: my-ingress
   annotations:
     kubernetes.io/ingress.class: "traefik"    
 spec:  
   rules:
-  - host: super-web.com
+  - host: myweb.com
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: web
-          servicePort: 80
+          service:
+            name: web-service
+            port:
+              number: 80
+  - host: admin.myweb.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pgadmin-service
+            port:
+              number: 8080

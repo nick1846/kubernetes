@@ -1,29 +1,44 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: postgres
 spec:
-  type: ClusterIP
   selector:
-    app: web
+    app: postgres
   ports:
-  - name: web
-    port: 80
-    targetPort: 80
+  - name: tcp-postgres
+    port: 5432 #service port
+    targetPort: 5432 #container port
     protocol: TCP
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-db
-  labels:
-    app: postgres
+  name: pgadmin-service 
 spec:
-  ports:
-  - name: postgres
-    port: 5432    
- # clusterIP: None
   selector:
-    app: postgres
+    app: pgadmin
+  ports:
+  - name: tcp-pgadmin   
+    port: 8080 #service port
+    targetPort: 80 #container port
+    protocol: TCP
+  
+
+---
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service 
+spec:
+  selector:
+    app: web
+  ports:
+  - name: tcp-web   
+    port: 80 #service port
+    targetPort: 80 #container port
+    protocol: TCP
   
